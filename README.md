@@ -22,7 +22,7 @@ npm start          # http://localhost:3000
    TOKEN_SECRET=<outra frase longa>
    ```
 4. **Mounts → Volume**: nome `ranking`, caminho `/data` (sem isso o ranking some a cada deploy).
-5. **Domains**: `www.projetoextensionista.online` e `projetoextensionista.online`, porta `3000`, HTTPS ligado.
+5. **Domains**: `www.projetoextensionista.online` e `projetoextensionista.online`, HTTPS ligado. A porta do domínio tem que ser a mesma que aparece no log ("Quebre o Ciclo em http://localhost:PORTA"); no Easypanel costuma ser `80`.
 6. No DNS do domínio: registro `A` de `@` e de `www` apontando para o IP da VPS.
 
 ## Área do professor
