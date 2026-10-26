@@ -138,7 +138,7 @@
     $('#hud-nome').textContent = nome;
     $('#hud-av').innerHTML = personagem(jogador.avatar);
     $('#hud-pontos').textContent = '0';
-    await intro(1, 'Detector', 'É conflito, agressão ou bullying? Você tem 10 segundos por situação. Acertos seguidos viram combo.');
+    await intro(1, 'Detector', 'É conflito, agressão ou bullying? Você tem 15 segundos por situação. Acertos seguidos viram combo.');
     await fase1();
     await intro(2, 'Feed', 'Seu celular não para. Cada mensagem pede uma decisão. Escolha com cuidado: aqui não tem tempo, tem consequência.');
     await fase2();
@@ -163,7 +163,7 @@
     mostra('fase1'); atualizaHud(1);
     const cartas = embaralha(C.detector).slice(0, 8);
     const NOMES = { conflito: 'Conflito', agressao: 'Agressão', bullying: 'Bullying' };
-    const DURACAO = 10000;
+    const DURACAO = 15000;
     let seq = 0;
     for (let i = 0; i < cartas.length; i++) {
       const carta = cartas[i];
