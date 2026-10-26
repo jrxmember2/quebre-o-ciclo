@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Quebre o Ciclo</title>
+  <meta name="description" content="Jogo do Projeto de Extensão Interdisciplinar: aprenda a reconhecer a violência, agir com respeito e quebrar o ciclo. Entre no ranking!">
+  <meta name="theme-color" content="#16121d">
+  <meta property="og:title" content="Quebre o Ciclo — o jogo">
+  <meta property="og:description" content="Respeito gera futuro. Jogue, pontue e entre no Hall do Respeito.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%236c3be4' stroke-width='10' stroke-dasharray='110 30'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grao" aria-hidden="true"></div>
+
+  <!-- ============ CAPA ============ -->
+  <main id="capa" class="tela ativa">
+    <header class="topo">
+      <a class="marca" href="#" aria-label="Quebre o Ciclo"><span class="marca-anel"></span>Quebre o Ciclo</a>
+      <nav>
+        <a href="#como">Como joga</a>
+        <a href="#hall">Ranking</a>
+        <a href="#ajuda">Ajuda</a>
+        <button class="som" data-som aria-label="Ligar ou desligar som">🔊</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-texto">
+        <p class="selo revela">PEI · Direito · Projeto de Extensão</p>
+        <h1 class="titulo">
+          <span class="linha revela"><span>Quebre</span></span>
+          <span class="linha revela"><span>o <em class="pincel">ciclo</em></span></span>
+        </h1>
+        <p class="sub revela">A violência não começa do nada. Ela se repete e se alimenta de várias situações. <strong>Neste jogo, você decide onde ela para.</strong></p>
+        <div class="acoes revela">
+          <button class="btn btn-grande" data-jogar><span>Jogar agora</span><i>→</i></button>
+          <a class="btn btn-fantasma" href="#hall">Ver o ranking</a>
+        </div>
+        <p class="nota revela">3 fases · uns 3 minutos · celular ou computador</p>
+      </div>
+
+      <div class="hero-arte" aria-hidden="true">
+        <div class="anel-wrap" id="anel"></div>
+        <div class="personagem p1 flutua" data-personagem="lia"></div>
+        <div class="personagem p2 flutua d2" data-personagem="davi"></div>
+        <div class="personagem p3 flutua d3" data-personagem="bia"></div>
+        <div class="doodle dd1 gira-lento" data-doodle="brilho"></div>
+        <div class="doodle dd2 pulsa" data-doodle="coracao"></div>
+        <div class="doodle dd3" data-doodle="coroa"></div>
+        <div class="doodle dd4 flutua d2" data-doodle="balao"></div>
+        <div class="tesoura">✂</div>
+      </div>
+    </section>
+
+    <div class="faixa" aria-hidden="true">
+      <div class="faixa-trilho">
+        <span>Respeito gera futuro</span><b>✦</b><span>Você tem voz</span><b>✦</b><span>Pedir ajuda é coragem</span><b>✦</b><span>Violência não é brincadeira</span><b>✦</b>
+        <span>Respeito gera futuro</span><b>✦</b><span>Você tem voz</span><b>✦</b><span>Pedir ajuda é coragem</span><b>✦</b><span>Violência não é brincadeira</span><b>✦</b>
+      </div>
+    </div>
+
+    <section id="como" class="bloco">
+      <h2 class="bloco-titulo revela-scroll">Três fases.<br><span class="marcador">Uma escolha por vez.</span></h2>
+      <div class="cartas-fase">
+        <article class="carta-fase revela-scroll" style="--cor: var(--roxo)">
+          <span class="num">01</span>
+          <div class="ic" data-doodle="balanca"></div>
+          <h3>Detector</h3>
+          <p>É conflito, agressão ou bullying? Leia a situação e classifique antes do tempo acabar. Acertos seguidos multiplicam os pontos.</p>
+        </article>
+        <article class="carta-fase revela-scroll" style="--cor: var(--laranja)">
+          <span class="num">02</span>
+          <div class="ic" data-doodle="celular"></div>
+          <h3>Feed</h3>
+          <p>Chegou print, ameaça, montagem com IA. O que você faz? Cada escolha no celular tem consequência.</p>
+        </article>
+        <article class="carta-fase revela-scroll" style="--cor: var(--verde)">
+          <span class="num">03</span>
+          <div class="ic" data-doodle="escudo"></div>
+          <h3>Quebre o ciclo</h3>
+          <p>Pegue as atitudes que constroem (diálogo, respeito, ajuda) e desvie das que machucam. 45 segundos de reflexo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="hall" class="bloco hall">
+      <div class="hall-cabeca">
+        <h2 class="bloco-titulo revela-scroll">Hall do<br><span class="marcador amarelo">Respeito</span></h2>
+        <div class="abas" role="tablist">
+          <button role="tab" data-escopo="hoje">Hoje</button>
+          <button role="tab" data-escopo="semana">Semana</button>
+          <button role="tab" data-escopo="geral" class="on">Geral</button>
+        </div>
+      </div>
+      <ol class="ranking" id="ranking-capa"></ol>
+    </section>
+
+    <section id="ajuda" class="bloco ajuda">
+      <h2 class="bloco-titulo revela-scroll">Você não está<br><span class="marcador verde">sozinho.</span></h2>
+      <p class="sub">Converse com seus pais, responsáveis, professor(a) ou orientador(a). E, se precisar:</p>
+      <div class="canais">
+        <a class="canal revela-scroll" href="tel:100"><b>100</b><span>Direitos Humanos<br><small>crianças e adolescentes</small></span></a>
+        <a class="canal revela-scroll" href="tel:180"><b>180</b><span>Central de Atendimento à Mulher</span></a>
+        <a class="canal revela-scroll" href="tel:190"><b>190</b><span>Polícia Militar<br><small>perigo imediato</small></span></a>
+        <a class="canal revela-scroll" href="tel:188"><b>188</b><span>CVV<br><small>pra conversar, 24h</small></span></a>
+        <div class="canal revela-scroll"><b class="mini">CRAS<br>CREAS</b><span>Serviços de apoio da sua cidade</span></div>
+      </div>
+    </section>
+
+    <footer class="rodape">
+      <p class="assina">Respeito<br>gera futuro!</p>
+      <div class="equipe">
+        <p class="equipe-titulo">Feito por</p>
+        <ul class="equipe-nomes">
+          <li>Ana Luisa</li><li>David</li><li>Evelyn</li><li>Jéssica</li><li>Joaquim</li><li>Rebecca</li><li>Sara</li>
+        </ul>
+        <p>Alunos do 4º período matutino do curso de Direito da <strong>Multivix Vitória</strong> (campus Goiabeiras)<br>
+          <small>Projeto de Extensão Interdisciplinar · "O ciclo da violência na juventude e a violação da dignidade humana"</small></p>
+      </div>
+    </footer>
+  </main>
+
+  <!-- ============ CADASTRO ============ -->
+  <section id="cadastro" class="tela tela-jogo">
+    <div class="painel">
+      <button class="fechar" data-voltar aria-label="Voltar">✕</button>
+      <h2>Quem vai<br><span class="marcador">quebrar o ciclo?</span></h2>
+      <form id="form-nome" autocomplete="off">
+        <label>Seu apelido <small>(aparece no ranking — nada de nome completo)</small>
+          <input name="nome" maxlength="16" minlength="2" required placeholder="ex: LiaDoBem">
+        </label>
+        <label>Turma <small>(opcional)</small>
+          <input name="turma" maxlength="20" placeholder="ex: 1º A">
+        </label>
+        <fieldset>
+          <legend>Escolha seu personagem</legend>
+          <div class="avatares" id="avatares"></div>
+        </fieldset>
+        <p class="erro" id="erro-nome" role="alert"></p>
+        <button class="btn btn-grande" type="submit"><span>Começar</span><i>→</i></button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ INTRO DE FASE ============ -->
+  <section id="intro" class="tela tela-jogo intro">
+    <div class="intro-num" id="intro-num">01</div>
+    <h2 id="intro-titulo">Detector</h2>
+    <p id="intro-texto"></p>
+    <button class="btn btn-grande" id="intro-ir"><span>Bora</span><i>→</i></button>
+  </section>
+
+  <!-- ============ HUD ============ -->
+  <div class="hud" id="hud" hidden>
+    <div class="hud-jogador"><span class="hud-av" id="hud-av"></span><b id="hud-nome"></b></div>
+    <div class="hud-fase" id="hud-fase">Fase 1/3</div>
+    <div class="hud-pontos"><small>pontos</small><b id="hud-pontos">0</b></div>
+  </div>
+
+  <!-- ============ FASE 1: DETECTOR ============ -->
+  <section id="fase1" class="tela tela-jogo fase">
+    <div class="tempo"><i id="f1-tempo"></i></div>
+    <p class="contador" id="f1-cont">1 / 8</p>
+    <div class="cartao" id="f1-cartao">
+      <span class="combo" id="f1-combo"></span>
+      <p id="f1-texto"></p>
+    </div>
+    <div class="opcoes3">
+      <button data-resp="conflito" style="--cor: var(--verde)"><b>Conflito</b><small>discordam, mas dá pra conversar</small></button>
+      <button data-resp="agressao" style="--cor: var(--laranja)"><b>Agressão</b><small>machuca, ameaça ou humilha</small></button>
+      <button data-resp="bullying" style="--cor: var(--roxo)"><b>Bullying</b><small>se repete e a pessoa não consegue se defender</small></button>
+    </div>
+    <div class="retorno" id="f1-retorno" hidden>
+      <b id="f1-ret-titulo"></b>
+      <p id="f1-ret-texto"></p>
+      <button class="btn" id="f1-prox"><span>Próxima</span><i>→</i></button>
+    </div>
+  </section>
+
+  <!-- ============ FASE 2: FEED ============ -->
+  <section id="fase2" class="tela tela-jogo fase">
+    <p class="contador" id="f2-cont">1 / 6</p>
+    <div class="celular">
+      <div class="cel-topo"><span>9:41</span><span class="cel-notch"></span><span>●●● 5G</span></div>
+      <div class="cel-app" id="f2-app"></div>
+      <div class="cel-post" id="f2-post"></div>
+    </div>
+    <div class="opcoes-feed" id="f2-opcoes"></div>
+    <div class="retorno" id="f2-retorno" hidden>
+      <b id="f2-ret-titulo"></b>
+      <p id="f2-ret-texto"></p>
+      <button class="btn" id="f2-prox"><span>Próxima</span><i>→</i></button>
+    </div>
+  </section>
+
+  <!-- ============ FASE 3: ARCADE ============ -->
+  <section id="fase3" class="tela tela-jogo fase fase-arcade">
+    <div class="arcade-hud">
+      <span id="f3-vidas" class="vidas"></span>
+      <span id="f3-tempo" class="f3-tempo">45</span>
+      <span id="f3-combo" class="f3-combo">x1</span>
+    </div>
+    <canvas id="f3-canvas"></canvas>
+    <p class="dica-controle">← → ou arraste o dedo</p>
+  </section>
+
+  <!-- ============ RESULTADO ============ -->
+  <section id="resultado" class="tela tela-jogo resultado">
+    <div class="res-cab">
+      <div class="res-av" id="res-av"></div>
+      <div>
+        <p class="selo" id="res-selo">Ciclo quebrado!</p>
+        <h2><span id="res-nome"></span>, você fez</h2>
+        <p class="res-pontos"><b id="res-pontos">0</b> pontos</p>
+        <p class="res-pos" id="res-pos"></p>
+      </div>
+    </div>
+    <div class="res-fases">
+      <div style="--cor: var(--roxo)"><small>Detector</small><b id="res-f1">0</b></div>
+      <div style="--cor: var(--laranja)"><small>Feed</small><b id="res-f2">0</b></div>
+      <div style="--cor: var(--verde)"><small>Quebre o ciclo</small><b id="res-f3">0</b></div>
+    </div>
+    <div class="compromisso">
+      <h3>Nosso combinado</h3>
+      <ul>
+        <li>Tratar as pessoas com respeito</li>
+        <li>Respeitar as diferenças</li>
+        <li>Não rir nem incentivar agressões</li>
+        <li>Pedir ajuda quando precisar</li>
+      </ul>
+    </div>
+    <h3 class="res-rank-titulo">Hall do Respeito</h3>
+    <ol class="ranking" id="ranking-res"></ol>
+    <div class="acoes">
+      <button class="btn btn-grande" data-jogar><span>Jogar de novo</span><i>↻</i></button>
+      <button class="btn btn-fantasma" data-voltar>Início</button>
+    </div>
+  </section>
+
+  <div class="confete" id="confete" aria-hidden="true"></div>
+
+  <script src="art.js"></script>
+  <script src="conteudo.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
