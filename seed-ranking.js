@@ -28,21 +28,27 @@ if (ja) {
   process.exit(0);
 }
 
+// f = escolhe personagem menina (Lia, Bia); m = menino (Davi, Theo).
+// '!' marca os 3 de 66 (~5%) que escolhem o personagem do outro gênero.
 const NOMES = [
-  'Duda', 'Gabi_17', 'Pedrinho', 'LuaMaria', 'Kauã', 'Ryan', 'Isa B', 'Enzo', 'Yasmin', 'Davizin',
-  'Mel', 'TH', 'Heloísa', 'JP', 'Nanda', 'Bielzin', 'Vitória', 'Kaique', 'Ana Clara', 'Sofi',
-  'Lorenzo', 'Bella', 'Matheus R', 'Rafa', 'Lívia', 'Gui', 'Manu', 'Arthurzin', 'Clarinha', 'Nicolas',
-  'Bia S', 'Samuel', 'Luiza', 'Heitor', 'Julinha', 'Breno', 'Ester', 'Caio', 'Lara', 'Miguel',
-  'Alice', 'Pietro', 'Valentina', 'Bernardo', 'Duda.M', 'Ketlyn', 'Wesley', 'Thalita', 'Igor', 'Carol',
-  'Vini', 'Lohana', 'Emanuel', 'Rebeca', 'Otávio', 'Giovanna', 'Murilo', 'Aninha', 'Diogo', 'Stefany',
-  'Luan', 'Ayla', 'Cauã', 'Raissa', 'Felipe', 'Mirella',
-];
+  'Duda:f', 'Gabi_17:f', 'Pedrinho:m', 'LuaMaria:f', 'Kauã:m', 'Ryan:m', 'Isa B:f', 'Enzo:m', 'Yasmin:f', 'Davizin:m',
+  'Mel:f!', 'TH:m', 'Heloísa:f', 'JP:m', 'Nanda:f', 'Bielzin:m', 'Vitória:f', 'Kaique:m', 'Ana Clara:f', 'Sofi:f',
+  'Lorenzo:m', 'Bella:f', 'Matheus R:m', 'Rafa:m!', 'Lívia:f', 'Gui:m', 'Manu:f', 'Arthurzin:m', 'Clarinha:f', 'Nicolas:m',
+  'Bia S:f', 'Samuel:m', 'Luiza:f', 'Heitor:m', 'Julinha:f', 'Breno:m', 'Ester:f', 'Caio:m', 'Lara:f', 'Miguel:m',
+  'Alice:f', 'Pietro:m', 'Valentina:f', 'Bernardo:m', 'Duda.M:f', 'Ketlyn:f', 'Wesley:m', 'Thalita:f', 'Igor:m!', 'Carol:f',
+  'Vini:m', 'Lohana:f', 'Emanuel:m', 'Rebeca:f', 'Otávio:m', 'Giovanna:f', 'Murilo:m', 'Aninha:f', 'Diogo:m', 'Stefany:f',
+  'Luan:m', 'Ayla:f', 'Cauã:m', 'Raissa:f', 'Felipe:m', 'Mirella:f',
+].map(t => {
+  const [nome, g] = t.split(':');
+  const troca = g.endsWith('!');
+  return { nome, menina: (g[0] === 'f') !== troca };
+});
 const TURMAS = [
   '1º A', '1A', '1° ano B', '2ºB', '2 ano C', '3º ano', '3C', '9º ano', '9A', '8ª série', '7º B', '6º ano A',
   '1EM', '2º EM', '3º EM B', '1º ano', 'turma 2B', '8B', '9° C', '1 ano A', '2°A', '3ºA', '7ª', '8º ano C',
   '1ºano', '2° B', '3 EM', '9 ano B', null, null, null,
 ];
-const AVATARES = ['lia', 'davi', 'bia', 'theo'];
+const AVATARES = { menina: ['lia', 'bia'], menino: ['davi', 'theo'] };
 
 // Gerador pseudoaleatório com semente fixa: o resultado é sempre o mesmo.
 let s = 20261027;
@@ -53,7 +59,7 @@ const inserir = db.prepare(`INSERT INTO partidas (nome, turma, avatar, pontos, f
   VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now', ?, ?, ?), 1)`);
 
 db.exec('BEGIN');
-NOMES.forEach((nome, i) => {
+NOMES.forEach(({ nome, menina }, i) => {
   const habilidade = 1 - i / NOMES.length; // 1 = melhor jogador
   // Fase 2: seis escolhas reais do jogo (0, 25, 50, 75 ou 150).
   let f2 = 0;
@@ -70,7 +76,7 @@ NOMES.forEach((nome, i) => {
   const quando = dias === 0
     ? [`-${30 + Math.floor(rnd() * 240)} minutes`, '+0 days', '+0 minutes']
     : ['start of day', `-${dias} days`, `+${600 + Math.floor(rnd() * 600)} minutes`];
-  inserir.run(nome, pega(TURMAS), pega(AVATARES), pontos, f1, f2, pontos - f1 - f2, ...quando);
+  inserir.run(nome, pega(TURMAS), pega(menina ? AVATARES.menina : AVATARES.menino), pontos, f1, f2, pontos - f1 - f2, ...quando);
 });
 db.exec('COMMIT');
 
