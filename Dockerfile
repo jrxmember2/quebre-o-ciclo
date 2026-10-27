@@ -1,7 +1,7 @@
 FROM node:24-alpine
 WORKDIR /app
 ENV NODE_ENV=production PORT=3000 DATA_DIR=/data
-COPY package.json server.js ./
+COPY package.json server.js seed-ranking.js ./
 COPY public ./public
 RUN mkdir -p /data && chown node:node /data
 USER node
