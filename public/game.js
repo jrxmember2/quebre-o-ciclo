@@ -56,8 +56,11 @@
     },
     local() { try { return JSON.parse(localStorage.getItem('qoc-ranking') || '[]'); } catch { return []; } },
     async ranking(escopo = 'geral', limite = 10) {
-      try { return (await this.req(`/api/ranking?escopo=${escopo}&limite=${limite}`)).itens; }
-      catch { return this.local().sort((a, b) => b.pontos - a.pontos).slice(0, limite); }
+      try { return await this.req(`/api/ranking?escopo=${escopo}&limite=${limite}`); }
+      catch {
+        const lista = this.local().sort((a, b) => b.pontos - a.pontos);
+        return { itens: lista.slice(0, limite), total: lista.length };
+      }
     },
     async salvar(dados) {
       if (this.online) {
@@ -75,15 +78,38 @@
   function desenhaRanking(ol, itens, meuId) {
     if (!itens.length) { ol.innerHTML = '<li class="vazio">Ninguém jogou ainda. O primeiro lugar está esperando você!</li>'; return; }
     ol.innerHTML = itens.map((it, i) => `
-      <li class="${it.id === meuId ? 'eu' : ''}" style="animation-delay:${i * 50}ms">
+      <li class="${it.id === meuId ? 'eu' : ''}" style="animation-delay:${Math.min(i, 12) * 50}ms">
         <span class="av">${personagem(it.avatar)}</span>
         <span class="nm">${esc(it.nome)}${it.turma ? `<small>${esc(it.turma)}</small>` : ''}</span>
         <span class="pt">${Number(it.pontos).toLocaleString('pt-BR')}</span>
       </li>`).join('');
   }
-  async function carregaRankingCapa(escopo = 'geral') {
+  // Cada lista mostra o top 10 e pode expandir para todos os jogadores.
+  const listas = {
+    'ranking-capa': { escopo: 'geral', todos: false, meuId: null },
+    'ranking-res': { escopo: 'geral', todos: false, meuId: null },
+  };
+  async function carregaRanking(id) {
+    const st = listas[id];
+    const { itens, total } = await api.ranking(st.escopo, st.todos ? 500 : 10);
+    const ol = $('#' + id);
+    desenhaRanking(ol, itens, st.meuId);
+    ol.classList.toggle('expandido', st.todos);
+    const b = $(`[data-ver-todos="${id}"]`);
+    b.hidden = total <= 10;
+    b.querySelector('span').textContent = st.todos ? 'Mostrar só o top 10' : `Ver todos os ${total} jogadores`;
+    b.querySelector('i').textContent = st.todos ? '↑' : '↓';
+  }
+  $$('[data-ver-todos]').forEach(b => b.addEventListener('click', async () => {
+    const id = b.dataset.verTodos;
+    listas[id].todos = !listas[id].todos;
+    await carregaRanking(id);
+    if (!listas[id].todos) $('#' + id).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }));
+  function carregaRankingCapa(escopo = listas['ranking-capa'].escopo) {
+    listas['ranking-capa'].escopo = escopo;
     $$('.abas button').forEach(b => b.classList.toggle('on', b.dataset.escopo === escopo));
-    desenhaRanking($('#ranking-capa'), await api.ranking(escopo, 10));
+    return carregaRanking('ranking-capa');
   }
   $$('.abas button').forEach(b => b.addEventListener('click', () => carregaRankingCapa(b.dataset.escopo)));
   carregaRankingCapa();
@@ -454,6 +480,7 @@
     } catch (e) {
       $('#res-pos').textContent = e.message;
     }
-    desenhaRanking($('#ranking-res'), await api.ranking('geral', 10), meuId);
+    Object.assign(listas['ranking-res'], { todos: false, meuId });
+    await carregaRanking('ranking-res');
   }
 })();

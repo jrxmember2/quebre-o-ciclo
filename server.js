@@ -68,7 +68,10 @@ const ESCOPOS = {
 };
 function ranking(escopo, limite) {
   const filtro = ESCOPOS[escopo] ?? '';
-  return db.prepare(`SELECT id, nome, turma, avatar, pontos, criado_em FROM partidas WHERE 1=1 ${filtro} ORDER BY pontos DESC, id ASC LIMIT ?`).all(limite);
+  return {
+    itens: db.prepare(`SELECT id, nome, turma, avatar, pontos, criado_em FROM partidas WHERE 1=1 ${filtro} ORDER BY pontos DESC, id ASC LIMIT ?`).all(limite),
+    total: db.prepare(`SELECT COUNT(*) AS n FROM partidas WHERE 1=1 ${filtro}`).get().n,
+  };
 }
 
 function json(res, status, corpo) {
@@ -100,8 +103,8 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (url.pathname === '/api/ranking' && req.method === 'GET') {
-      const limite = Math.min(Number(url.searchParams.get('limite')) || 10, 50);
-      return json(res, 200, { itens: ranking(url.searchParams.get('escopo') || 'geral', limite) });
+      const limite = Math.min(Number(url.searchParams.get('limite')) || 10, 500);
+      return json(res, 200, ranking(url.searchParams.get('escopo') || 'geral', limite));
     }
 
     if (url.pathname === '/api/pontos' && req.method === 'POST') {

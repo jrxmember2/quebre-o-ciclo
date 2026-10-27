@@ -215,6 +215,9 @@ img, svg { display: block; max-width: 100%; }
 .ranking .nm { font-weight: 800; font-size: 19px; line-height: 1.1; }
 .ranking .nm small { display: block; font-weight: 400; font-size: 13px; color: var(--tinta-2); }
 .ranking .pt { font-weight: 800; font-size: 22px; font-variant-numeric: tabular-nums; }
+.ranking.expandido { max-height: min(70vh, 640px); overflow-y: auto; overscroll-behavior: contain; padding: 4px 12px 10px 4px; border-radius: 22px; scrollbar-color: var(--roxo) transparent; }
+.ver-todos { display: flex; margin: 18px auto 0; border-style: dashed; }
+.ver-todos[hidden] { display: none; }
 .ranking .vazio { display: block; text-align: center; padding: 28px; color: var(--tinta-2); }
 .ranking .vazio::before { content: none; }
 
